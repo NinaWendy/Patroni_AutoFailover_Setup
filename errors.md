@@ -98,3 +98,48 @@ patroni[1111856]: Available implementations: consul, kubernetes
 > **Note:** Installing with `[etcd]` ensures Patroni has etcd3gw support.
 
 ---
+
+## Error 5: PostgreSQL Verion conflict with ubuntu release version
+
+```sh
+$ sudo apt dist-upgrade -y
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+Calculating upgrade... Done
+The following security updates require Ubuntu Pro with 'esm-infra' enabled:
+  cloud-init linux-headers-generic linux-libc-dev libpython3.8-dev
+  libblockdev-swap2 libpython3.8-minimal git-man libsystemd0
+  linux-image-generic libsqlite3-0 python3-urllib3 sudo libpython3.8 python3.8
+  git libblockdev-crypto2 udev libblockdev-loop2 libblockdev-fs2
+  libblockdev-part2 python3-requests libudev1 libsoup2.4-1 systemd-timesyncd
+  udisks2 python3.8-minimal systemd-sysv libblockdev2 libpam-systemd systemd
+  libblockdev-utils2 libnss-systemd libblockdev-part-err2 libpython3.8-stdlib
+  libudisks2-0 python3.8-dev linux-generic libxslt1.1
+Learn more about Ubuntu Pro at https://ubuntu.com/pro
+0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded
+```
+
+**Solution:**
+
+1.  Make sure the update-manager-core is installed:
+
+    ```sh
+    sudo apt install update-manager-core -y
+    ```
+
+2. Ensure this file says "Prompt=lts":
+
+    ```sh
+    sudo nano /etc/update-manager/release-upgrades
+    ```
+3. Run the release upgrade:
+
+    ```sh
+    sudo do-release-upgrade
+    ```
+4. After reboot verify ubuntu version:
+
+    ```sh
+    lsb_release -a
+    ```
